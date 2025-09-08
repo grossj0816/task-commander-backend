@@ -1,4 +1,4 @@
-name: build-release-task-commander-backend
+name: destroy-task-commander-backend
 
 on: [workflow_dispatch]
 
