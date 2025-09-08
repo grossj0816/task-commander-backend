@@ -1,0 +1,59 @@
+name: build-release-task-commander-backend
+
+on: [workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            # GIT CHECKOUT
+            - name: Git Checkout
+              uses: actions/checkout@v4
+
+            # SETUP PYTHON
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'
+
+            # INSTALL AWS CLI
+            - name: Install AWS CLI
+              run: pip install awscli
+
+            # INSTALL LAMBDA DEPENDENCIES
+            - name: Install Dependencies
+              working-directory:
+              run: pip install --target ./ boto3 mysql-connector-python
+
+            # INSTALL TERRAFORM
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            # PACKAGE LAMBDAS
+            - name: Package code
+              working-directory:
+              run: |
+                cd package
+                zip -r ../lambdas.zip .
+                cd ..
+                zip lambdas.zip *.py
+                pwd; ls -la
+                unzip -l lambdas.zip
+
+            # CONFIG AWS
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
+
+            # DEPLOY TO AWS
+            - name: Deploy Terraform
+              working-directory: ./terraform
+              run: |
+                 rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
+                 terraform init -input=false
+                 terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
+                 terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
