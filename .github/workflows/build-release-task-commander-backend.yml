@@ -17,7 +17,7 @@ jobs:
             - name: Git Checkout
               uses: actions/checkout@v4
               with:
-                repository: terraform-modules/grossj0816
+                repository: terraform-modules
                 path: secondary-repo
 
             # SETUP PYTHON
