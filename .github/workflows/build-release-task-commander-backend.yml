@@ -10,6 +10,9 @@ jobs:
             # GIT CHECKOUT
             - name: Git Checkout
               uses: actions/checkout@v4
+              with:
+                repository: ${GITHUB_REPOSITORY##*/}
+                path: main-repo
 
             # GIT CHECKOUT SECOND REPO
             - name: Git Checkout
