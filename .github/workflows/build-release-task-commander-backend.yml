@@ -64,6 +64,8 @@ jobs:
             - name: Package code
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
+                cd ..
+                mkdir package
                 cd package
                 zip -r ../lambdas.zip .
                 cd ..
