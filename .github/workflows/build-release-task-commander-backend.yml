@@ -23,7 +23,7 @@ jobs:
 
             - name: "List Contents From MAIN-REPO"
               working-directory: ./main-repo
-              run: pwd; ls -la
+              run: pwd; ls -la home/runner/work
 
             - name: "List Contents From SECONDARY-REPO"
               run: |
