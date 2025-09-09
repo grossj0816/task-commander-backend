@@ -22,6 +22,7 @@ jobs:
 
             - name: "List Contents From Main-REPO"
               run: |
+                cd ..
                 pwd; ls -la
 
             # - name: Move Terraform Module
