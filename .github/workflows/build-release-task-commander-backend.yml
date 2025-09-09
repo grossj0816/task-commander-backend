@@ -7,7 +7,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # GIT CHECKOUT
             - name: Git Checkout
               uses: actions/checkout@v4
               with:
@@ -15,8 +14,7 @@ jobs:
                 path: main-repo
   
 
-            # GIT CHECKOUT SECOND REPO
-            - name: Git Checkout
+            - name: Git Checkout Terraform Modules
               uses: actions/checkout@v4
               with:
                 repository: grossj0816/terraform-modules
@@ -40,9 +38,6 @@ jobs:
             - name: List Contents From MAIN-REPO (AFTER)
               working-directory: ./main-repo
               run: pwd; ls -la task-cmndr-backend/terraform
-            # - name: List shit in dir
-            #   working-directory: ./main-repo/task-cmndr-backend/terraform
-            #   run: ls
 
 
             # SETUP PYTHON
@@ -57,38 +52,39 @@ jobs:
 
 
             # INSTALL LAMBDA DEPENDENCIES
-            # - name: Install Dependencies
-            #   working-directory: ./main-repo
-            #   run: pip install --target ./ boto3 mysql-connector-python
+            - name: Install Dependencies
+              working-directory: ./main-repo/task-cmndr-backend/lambdas
+              run: pip install --target ./ boto3 mysql-connector-python
 
             # INSTALL TERRAFORM
-            # - name: Install Terraform
-            #   uses: hashicorp/setup-terraform@v3
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v3
 
             # PACKAGE LAMBDAS
-            # - name: Package code
-            #   working-directory: ./main-repo/task-cmndr-backend/lambdas
-            #   run: |
-            #     cd package
-            #     zip -r ../lambdas.zip .
-            #     cd ..
-            #     zip lambdas.zip *.py
-            #     pwd; ls -la
-            #     unzip -l lambdas.zip
+            - name: Package code
+              working-directory: ./main-repo/task-cmndr-backend/lambdas
+              run: |
+                cd package
+                zip -r ../lambdas.zip .
+                cd ..
+                zip lambdas.zip *.py
+                pwd; ls -la
+                unzip -l lambdas.zip
 
             # CONFIG AWS
-            # - name: Configure AWS Credentials
-            #   uses: aws-actions/configure-aws-credentials@v4
-            #   with:
-            #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-            #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #     aws-region: ${{ vars.AWS_REGION }}
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
 
             # DEPLOY TO AWS
-            # - name: Deploy Terraform
-            #   working-directory: .//task-cmndr-backend/terraform
-            #   run: |
-            #      rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
-            #      terraform init -input=false
+            - name: Deploy Terraform
+              working-directory: ./main-repo/task-cmndr-backend/terraform
+              run: |
+                 rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
+                 terraform init -input=false
+                 terraform plan
             #      terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
             #      terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
