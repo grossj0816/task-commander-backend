@@ -20,6 +20,16 @@ jobs:
                 repository: grossj0816/terraform-modules
                 path: secondary-repo
 
+            - name: Move Terraform Module
+              working-directory: ./secondary-repo
+              run: mv ./gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
+
+
+            - name: List shit in dir
+              working-directory: ./main-repo/task-cmndr-backend/terraform
+              run: ls
+
+
             # SETUP PYTHON
             - name: Setup Python
               uses: actions/setup-python@v4
@@ -30,39 +40,40 @@ jobs:
             - name: Install AWS CLI
               run: pip install awscli
 
-            # # INSTALL LAMBDA DEPENDENCIES
-            # - name: Install Dependencies
-            #   working-directory:
-            #   run: pip install --target ./ boto3 mysql-connector-python
 
-            # # INSTALL TERRAFORM
-            # - name: Install Terraform
-            #   uses: hashicorp/setup-terraform@v3
+            # INSTALL LAMBDA DEPENDENCIES
+            - name: Install Dependencies
+              working-directory: ./main-repo
+              run: pip install --target ./ boto3 mysql-connector-python
 
-            # # PACKAGE LAMBDAS
-            # - name: Package code
-            #   working-directory: ./task-cmndr-backend/lambdas
-            #   run: |
-            #     cd package
-            #     zip -r ../lambdas.zip .
-            #     cd ..
-            #     zip lambdas.zip *.py
-            #     pwd; ls -la
-            #     unzip -l lambdas.zip
+            # INSTALL TERRAFORM
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v3
 
-            # # CONFIG AWS
-            # - name: Configure AWS Credentials
-            #   uses: aws-actions/configure-aws-credentials@v4
-            #   with:
-            #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-            #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #     aws-region: ${{ vars.AWS_REGION }}
+            # PACKAGE LAMBDAS
+            - name: Package code
+              working-directory: ./main-repo/task-cmndr-backend/lambdas
+              run: |
+                cd package
+                zip -r ../lambdas.zip .
+                cd ..
+                zip lambdas.zip *.py
+                pwd; ls -la
+                unzip -l lambdas.zip
 
-            # # DEPLOY TO AWS
-            # - name: Deploy Terraform
-            #   working-directory: ./task-cmndr-backend/lambdas
-            #   run: |
-            #      rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
-            #      terraform init -input=false
-            #      terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
-            #      terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
+            # CONFIG AWS
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
+
+            # DEPLOY TO AWS
+            - name: Deploy Terraform
+              working-directory: .//task-cmndr-backend/terraform
+              run: |
+                 rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
+                 terraform init -input=false
+                 terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
+                 terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
