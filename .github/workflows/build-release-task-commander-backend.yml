@@ -23,9 +23,7 @@ jobs:
             - name: "List Contents From Main-REPO"
               working-directory: ./main-repo
               run: |
-                ls -F
-                ls -F main-repo
-                ls -F secondary-repo
+                ls ${GITHUB_WORKSPACE##*/}
 
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
