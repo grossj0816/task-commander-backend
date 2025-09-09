@@ -10,19 +10,17 @@ jobs:
             # GIT CHECKOUT
             - name: Git Checkout
               uses: actions/checkout@v4
-              with:
-                path: main-repo
 
             # GIT CHECKOUT SECOND REPO
             - name: Git Checkout
               uses: actions/checkout@v4
               with:
                 repository: grossj0816/terraform-modules
-                path: secondary-repo
+                # path: secondary-repo
 
             - name: "List Contents From Main-REPO"
               run: |
-                pwd; ls -la main-repo/.git
+                pwd; ls -la 
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
             #   run: mv ./secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
