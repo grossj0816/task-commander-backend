@@ -22,7 +22,7 @@ jobs:
 
             - name: "List Contents From Main-REPO"
               run: |
-                pwd; ls -la main-repo
+                pwd; ls -la main-repo/.git
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
             #   run: mv ./secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
