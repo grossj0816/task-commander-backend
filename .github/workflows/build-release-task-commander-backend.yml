@@ -21,9 +21,8 @@ jobs:
                 path: secondary-repo
 
             - name: "List Contents From Main-REPO"
-              working-directory: ./main-repo
               run: |
-                pwd; ls -la
+                pwd; ls -la .git
 
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
