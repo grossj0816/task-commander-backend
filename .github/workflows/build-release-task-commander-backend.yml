@@ -22,7 +22,8 @@ jobs:
 
             - name: "List Contents From Main-REPO"
               working-directory: ./main-repo
-              run: ls -la src/main-repo
+              run: ls -la src/
+              
 
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
