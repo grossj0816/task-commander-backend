@@ -67,7 +67,7 @@ jobs:
                 cd ..
                 mkdir package
                 cd package
-                zip -r ../lambdas.zip .
+                zip -r ../lambdas.zip . -i
                 cd ..
                 zip lambdas.zip *.py
                 pwd; ls -la
