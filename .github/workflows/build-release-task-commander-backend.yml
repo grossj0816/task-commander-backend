@@ -21,9 +21,12 @@ jobs:
                 repository: grossj0816/terraform-modules
                 path: secondary-repo
 
-            - name: "List Contents From Main-REPO"
+            - name: "List Contents From MAIN-REPO"
+              working-directory: ./main-repo
+              run: pwd; ls -la
+
+            - name: "List Contents From SECONDARY-REPO"
               run: |
-                pwd; ls -la main-repo/
                 pwd; ls -la secondary-repo/gw-method-and-intg-resources
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
