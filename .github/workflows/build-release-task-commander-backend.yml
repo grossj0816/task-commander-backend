@@ -64,14 +64,15 @@ jobs:
             - name: Package code
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
-                cd ..
-                mkdir package
-                cd package
-                zip -r ../lambdas.zip . -i
-                cd ..
-                zip lambdas.zip *.py
-                pwd; ls -la
-                unzip -l lambdas.zip
+                pwd
+              # cd ..
+              # mkdir package
+              # cd package
+              # zip -r ../lambdas.zip . -i
+              # cd ..
+              # zip lambdas.zip *.py
+              # pwd; ls -la
+              # unzip -l lambdas.zip
 
             # CONFIG AWS
             - name: Configure AWS Credentials
