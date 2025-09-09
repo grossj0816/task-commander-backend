@@ -11,7 +11,7 @@ jobs:
             - name: Git Checkout
               uses: actions/checkout@v4
               with:
-                repository: ${GITHUB_REPOSITORY##*/}
+                repository: grossj0816/task-commander-backend
                 path: main-repo
 
             # GIT CHECKOUT SECOND REPO
