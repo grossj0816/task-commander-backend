@@ -64,11 +64,12 @@ jobs:
             - name: Package code
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
-                pwd
-              # cd ..
+                pwd; ls -la
+                cd ..
+                pwd; ls -la
               # mkdir package
               # cd package
-              # zip -r ../lambdas.zip . -i
+              # zip -r ../lambdas.zip . 
               # cd ..
               # zip lambdas.zip *.py
               # pwd; ls -la
