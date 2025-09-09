@@ -33,7 +33,7 @@ jobs:
 
             - name: Move Terraform Module
               working-directory: ./secondary-repo
-              run: mv gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
+              run: mv gw-method-and-intg-resources  ./main-repo/task-cmndr-backend/terraform
 
 
             - name: List Contents From MAIN-REPO (AFTER)
