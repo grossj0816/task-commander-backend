@@ -16,7 +16,7 @@ jobs:
               uses: actions/checkout@v4
               with:
                 repository: grossj0816/terraform-modules
-                # path: secondary-repo
+                path: secondary-repo
 
             - name: "List Contents From Main-REPO"
               run: |
