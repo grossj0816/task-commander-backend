@@ -24,7 +24,6 @@ jobs:
             - name: "List Contents From Main-REPO"
               run: |
                 pwd; ls -la main-repo/
-
                 pwd; ls -la secondary-repo/gw-method-and-intg-resources
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
