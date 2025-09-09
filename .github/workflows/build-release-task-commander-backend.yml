@@ -7,60 +7,53 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            #Checkout default repo (task-commander-backend) 
             - name: Git Checkout
               uses: actions/checkout@v4
               with:
                 repository: grossj0816/task-commander-backend
                 path: main-repo
   
-
+            # Checkout API GW Module
             - name: Git Checkout Terraform Modules
               uses: actions/checkout@v4
               with:
                 repository: grossj0816/terraform-modules
                 path: secondary-repo
 
-
-            - name: List Contents From MAIN-REPO
-              run: pwd; ls -la main-repo/task-cmndr-backend
-
-
-            - name: List Contents From SECONDARY-REPO
-              run: pwd; ls -la secondary-repo/gw-method-and-intg-resources
-
-
+            # Move the terraform module in terraform source dir.
             - name: Move Terraform Module
               run: |
                 pwd; ls -la
                 mv secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
 
-
+            # LS "main-repo" after gw-method-and-intg-resources dir move
             - name: List Contents From MAIN-REPO (AFTER)
               working-directory: ./main-repo
               run: pwd; ls -la task-cmndr-backend/terraform
 
 
-            # SETUP PYTHON
+            # Setup Python
             - name: Setup Python
               uses: actions/setup-python@v4
               with:
                 python-version: '3.10'
 
-            # INSTALL AWS CLI
+            # Install AWS CLI
             - name: Install AWS CLI
               run: pip install awscli
 
 
-            # INSTALL LAMBDA DEPENDENCIES
+            # Install Lambda Dependencies
             - name: Install Dependencies
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: pip install --target ./ boto3 mysql-connector-python
 
-            # INSTALL TERRAFORM
+            # Install Terraform
             - name: Install Terraform
               uses: hashicorp/setup-terraform@v3
 
-            # PACKAGE LAMBDAS
+            # Package Lambdas
             - name: Package code
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
@@ -69,20 +62,20 @@ jobs:
                 pwd; ls -la
                 unzip -l lambdas.zip
 
-            # # CONFIG AWS
-            # - name: Configure AWS Credentials
-            #   uses: aws-actions/configure-aws-credentials@v4
-            #   with:
-            #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-            #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #     aws-region: ${{ vars.AWS_REGION }}
+            # Configure AWS
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
 
-            # # DEPLOY TO AWS
-            # - name: Deploy Terraform
-            #   working-directory: ./main-repo/task-cmndr-backend/terraform
-            #   run: |
-            #      rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
-            #      terraform init -input=false
-            #      terraform plan
-            #      terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
-            #      terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
+            # Deploy AWS Resources
+            - name: Deploy Terraform
+              working-directory: ./main-repo/task-cmndr-backend/terraform
+              run: |
+                 rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
+                 terraform init -input=false
+                 terraform plan
+                 terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
+                 terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
