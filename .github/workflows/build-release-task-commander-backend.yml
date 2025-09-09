@@ -23,7 +23,7 @@ jobs:
 
             - name: "List Contents From MAIN-REPO"
               working-directory: ./main-repo
-              run: pwd; ls -la /home/runner/work/task-commander-backend/task-commander-backend/main-repo
+              run: pwd; ls -la /home/runner/work/task-commander-backend/task-commander-backend/
 
 
             - name: "List Contents From SECONDARY-REPO"
