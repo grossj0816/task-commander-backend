@@ -65,12 +65,8 @@ jobs:
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
                 pwd; ls -la
-                cd ..
+                zip -r ../lambdas.zip . 
                 pwd; ls -la
-              # mkdir package
-              # cd package
-              # zip -r ../lambdas.zip . 
-              # cd ..
               # zip lambdas.zip *.py
               # pwd; ls -la
               # unzip -l lambdas.zip
