@@ -23,8 +23,7 @@ jobs:
                 path: secondary-repo
 
             - name: "List Contents From MAIN-REPO"
-              working-directory: ./main-repo
-              run: pwd; ls -la /home/runner/work/task-commander-backend/task-commander-backend/main-repo/.git/refs/heads/main
+              run: pwd; ls -la main-repo/
 
 
             - name: "List Contents From SECONDARY-REPO"
