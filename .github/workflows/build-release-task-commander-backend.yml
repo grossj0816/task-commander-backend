@@ -13,6 +13,7 @@ jobs:
               with:
                 repository: grossj0816/task-commander-backend
                 path: main-repo
+  
 
             # GIT CHECKOUT SECOND REPO
             - name: Git Checkout
@@ -27,8 +28,7 @@ jobs:
 
 
             - name: "List Contents From SECONDARY-REPO"
-              run: |
-                pwd; ls -la secondary-repo/gw-method-and-intg-resources
+              run: pwd; ls -la secondary-repo/gw-method-and-intg-resources
             # - name: Move Terraform Module
             #   working-directory: ./secondary-repo
             #   run: mv ./secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
