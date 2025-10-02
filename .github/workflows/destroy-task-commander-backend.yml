@@ -28,9 +28,12 @@ jobs:
                 mv secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
 
             # LS "main-repo" after gw-method-and-intg-resources dir move
-            - name: List Contents From MAIN-REPO (AFTER)
+            - name: Pre-Destroy Step
               working-directory: ./main-repo
-              run: pwd; ls -la task-cmndr-backend/terraform
+              run: |
+                pwd; ls -la task-cmndr-backend/terraform
+                cd task-cmndr-backend/lambdas
+                zip -j lambdas.zip
 
             # INSTALL AWS CLI
             - name: Install AWS CLI
