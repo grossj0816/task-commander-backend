@@ -36,7 +36,7 @@ data "aws_vpc" "dev_vpc" {
 data "aws_security_groups" "lambda_sg" {
   filter {
     name   = "group-name"
-    values = ["DEV VPC Lambda SG"]
+    values = ["dev_vpc_db_sg"]
   }
 }
 
