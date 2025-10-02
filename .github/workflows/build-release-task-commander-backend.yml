@@ -32,7 +32,6 @@ jobs:
               working-directory: ./main-repo
               run: pwd; ls -la task-cmndr-backend/terraform
 
-
             # Setup Python
             - name: Setup Python
               uses: actions/setup-python@v4
@@ -43,21 +42,31 @@ jobs:
             - name: Install AWS CLI
               run: pip install awscli
 
+            # Install Terraform
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            # Configure AWS
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
 
             # Install Lambda Dependencies
             - name: Install Dependencies
               working-directory: ./main-repo/task-cmndr-backend/lambdas
-              run: pip install --target ./ boto3 mysql-connector-python
+              run: pip install --target ./package boto3 mysql-connector-python
 
-            # Install Terraform
-            - name: Install Terraform
-              uses: hashicorp/setup-terraform@v3
 
             # Package Lambdas
             - name: Package code
               working-directory: ./main-repo/task-cmndr-backend/lambdas
               run: |
-                zip -r ../lambdas.zip . 
+                cd package
+                zip -r ../lambdas.zip .
+                cd ..
                 zip lambdas.zip *.py
                 pwd; ls -la
                 unzip -l lambdas.zip
@@ -73,15 +82,7 @@ jobs:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
                 AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
-
-            # Configure AWS
-            - name: Configure AWS Credentials
-              uses: aws-actions/configure-aws-credentials@v4
-              with:
-                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                aws-region: ${{ vars.AWS_REGION }}
-
+  
             # Deploy AWS Resources
             - name: Deploy Terraform
               working-directory: ./main-repo/task-cmndr-backend/terraform
