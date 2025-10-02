@@ -33,7 +33,7 @@ jobs:
             - name: Deploy Terraform
               working-directory: ./terraform
               run: |
-                 rm -fr terraform.tfstate || echo 'DOESN'T EXIST'
+                 rm -fr terraform.tfstate || echo 'DOES NOT EXIST'
                  terraform init -input=false
                  terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
                  terraform workspace select ${GITHUB_REF##*/} && terraform destroy -input=false -auto-approve
