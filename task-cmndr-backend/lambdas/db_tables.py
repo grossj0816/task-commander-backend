@@ -1,6 +1,5 @@
 import jso
 import os
-import mysql.connector
 from mysql.connector import Error
 from db import DbUtils
 
