@@ -75,7 +75,7 @@ jobs:
               working-directory: ./main-repo/task-cmndr-backend/terraform
               run: |
                  rm -fr terraform.tfstate || echo 'DOES NOT EXIST'
-                 terraform init -input=false
+                 terraform init -upgrade -input=false
                  terraform plan
                  terraform workspace new ${GITHUB_REF##*/} || echo 'ALREADY EXISTS'
                  terraform workspace select ${GITHUB_REF##*/} && terraform apply -input=false -auto-approve
