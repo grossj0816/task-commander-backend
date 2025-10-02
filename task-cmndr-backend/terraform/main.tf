@@ -90,7 +90,7 @@ resource "aws_lambda_permission" "create_tables_lambda_perm" {
 }
 
 resource "aws_cloudwatch_log_group" "create_tables_lambda" {
-  name              = "aws/lambda/${aws_lambda_function.create_tables_lambda.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.create_tables_lambda.function_name}"
   retention_in_days = 30
   skip_destroy      = false
 }
