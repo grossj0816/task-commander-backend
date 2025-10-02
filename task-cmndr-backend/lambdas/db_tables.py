@@ -1,4 +1,4 @@
-import jso
+import json
 import os
 from mysql.connector import Error
 from db import DbUtils
