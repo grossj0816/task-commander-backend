@@ -30,8 +30,8 @@ jobs:
                 aws-region: ${{ vars.AWS_REGION }}
 
             # DEPLOY TO AWS
-            - name: Deploy Terraform
-              working-directory: ./terraform
+            - name: Destroy Terraform
+              working-directory: ./task-cmndr-backend/terraform
               run: |
                  rm -fr terraform.tfstate || echo 'DOES NOT EXIST'
                  terraform init -input=false
