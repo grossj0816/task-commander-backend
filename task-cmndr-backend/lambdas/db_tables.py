@@ -1,5 +1,5 @@
 import json
-import od
+import os
 from mysql.connector import Error
 from db import DbUtils
 
@@ -12,7 +12,7 @@ def create_task_cmndr_db_tables(event, context):
 
 
     try:
-        with DbUtils(host,dn_name, username, password) as db:
+        with DbUtils(host, db_name, username, password) as db:
             if db.is_connected():
                 db_info = db.get_server_info()
                 print("Connected to MySQL Server version:", db_info)
@@ -22,7 +22,7 @@ def create_task_cmndr_db_tables(event, context):
                 cursor.execute("CREATE TABLE IF NOT EXISTS `new_tasks`(`nTaskId` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,`userId` INT NOT NULL,`title` VARCHAR(75),`description` VARCHAR(150),`completed` BOOLEAN,`createdBy` VARCHAR(100),`createdDate` DATETIME(0),`lastModifiedBy` VARCHAR(100),`lastModifiedDate` DATETIME(0), FOREIGN KEY(`userId`) REFERENCES `users`(`userId`))")
                 cursor.execute("CREATE TABLE IF NOT EXISTS `archived_tasks`(`setId` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,courseId INT NOT NULL,`setName` VARCHAR(175),`active` BOOLEAN,`createdBy` VARCHAR(100),`createdDate` DATETIME(0),`lastModifiedBy` VARCHAR(100)`lastModifiedDate` DATETIME(0), FOREIGN KEY(`userId`) REFERENCES `users`(`userId`))")
                 print("Table creation has been completed.")
-        except Error as e:
+    except Error as e:
             print('Error while connecting to MySQL...', e)
     
     return{
