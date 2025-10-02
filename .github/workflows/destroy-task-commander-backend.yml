@@ -33,7 +33,7 @@ jobs:
               run: |
                 pwd; ls -la task-cmndr-backend/terraform
                 cd task-cmndr-backend/lambdas
-                zip -j lambdas.zip
+                zip -j lambdas.zip file.txt
 
             # INSTALL AWS CLI
             - name: Install AWS CLI
