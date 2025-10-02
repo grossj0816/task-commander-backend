@@ -7,15 +7,29 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # GIT CHECKOUT
+            #Checkout default repo (task-commander-backend) 
             - name: Git Checkout
               uses: actions/checkout@v4
+              with:
+                repository: grossj0816/task-commander-backend
+                path: main-repo
+            
+            # Checkout API GW Module
+            - name: Git Checkout Terraform Modules
+              uses: actions/checkout@v4
+              with:
+                repository: grossj0816/terraform-modules
+                path: secondary-repo
 
+            # Move the terraform module in terraform source dir.
+            - name: Move Terraform Module
+              run: |
+                pwd; ls -la
+                mv secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
 
             # INSTALL AWS CLI
             - name: Install AWS CLI
               run: pip install awscli
-
 
             # INSTALL TERRAFORM
             - name: Install Terraform
@@ -31,7 +45,7 @@ jobs:
 
             # DEPLOY TO AWS
             - name: Destroy Terraform
-              working-directory: ./task-cmndr-backend/terraform
+              working-directory:  ./main-repo/task-cmndr-backend/lambdas
               run: |
                  rm -fr terraform.tfstate || echo 'DOES NOT EXIST'
                  terraform init -input=false
