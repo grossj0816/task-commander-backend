@@ -86,7 +86,7 @@ resource "aws_lambda_permission" "create_tables_lambda_perm" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.create_tables_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = aws_api_gateway
+  source_arn    = "${aws_api_gateway_rest_api.task-cmndr-api-gateway.execution_arn}/*/*"
 }
 
 resource "aws_cloudwatch_log_group" "create_tables_lambda" {
