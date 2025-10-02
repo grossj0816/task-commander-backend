@@ -27,11 +27,6 @@ jobs:
                 pwd; ls -la
                 mv secondary-repo/gw-method-and-intg-resources  main-repo/task-cmndr-backend/terraform
 
-            # LS "main-repo" after gw-method-and-intg-resources dir move
-            - name: List Contents From MAIN-REPO (AFTER)
-              working-directory: ./main-repo
-              run: pwd; ls -la task-cmndr-backend/terraform
-
             # Setup Python
             - name: Setup Python
               uses: actions/setup-python@v4
